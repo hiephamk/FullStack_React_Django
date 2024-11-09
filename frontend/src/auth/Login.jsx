@@ -7,7 +7,7 @@ import { AuthContext } from '../context/AuthContext';
 function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const { setAuth, setUsername: setAuthUsername } = useContext(AuthContext);
+    const { setAuth, setUsername: setAuthUsername} = useContext(AuthContext);
     const [rememberMe, setRememberMe] = useState(false);
     const navigate = useNavigate();
 

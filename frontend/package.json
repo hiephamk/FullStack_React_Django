@@ -14,8 +14,11 @@
     "@emotion/styled": "^11.13.0",
     "@mui/material": "^6.1.6",
     "axios": "^1.7.7",
+    "bootstrap": "^5.3.3",
+    "jwt-decode": "^4.0.0",
     "prop-types": "^15.8.1",
     "react": "^18.3.1",
+    "react-bootstrap": "^2.10.5",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.1",
     "react-router-dom": "^6.27.0"

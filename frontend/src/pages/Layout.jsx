@@ -1,16 +1,21 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext} from '../context/AuthContext';
 
 
 export default function Layout() {
-  const { logout, username } = useContext(AuthContext);
+  const { auth, logout, username } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
     navigate('/')
   }
+  useEffect(() => {
+    if (!auth) {
+      navigate('/'); // Redirect to login if not authenticated
+    }
+  }, [auth, navigate]);
   return (
     <div className="page-container">
       {/* Top Navigation Bar */}

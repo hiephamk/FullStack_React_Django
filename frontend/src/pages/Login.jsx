@@ -1,72 +1,60 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
-import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 
-const Login = ({ onLogin }) => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const navigate = useNavigate();
+export default function Login() {
+  const [credentials, setCredentials] = useState({ username: '', password: '' });
+  const { setAuth, setUsername } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-    
-        try {
-            // Send a POST request to the Djoser token login endpoint
-            const response = await axios.post(
-                'http://localhost:8000/auth/login/', 
-                { username, password },
-                { headers: { 'Content-Type': 'application/json' } }
-            );
-    
-            // Check if the response contains the token
-            if (response.status === 200) {
-                const { auth_token } = response.data;
+  const loginUser = async (credentials) => {
+    try {
+      const response = await axios.post('/api/login/', credentials);
+      const { token, username } = response.data;
 
-                // Store the token in localStorage (you can use sessionStorage if preferred)
-                localStorage.setItem('token', auth_token);
+      // Store token and username in both context and storage
+      localStorage.setItem('token', token);
+      localStorage.setItem('username', username);
+      setAuth(token);
+      setUsername(username);
 
-                // Set the token for future requests (optional)
-                axios.defaults.headers['Authorization'] = `Token ${auth_token}`;
+      navigate('/home'); // Redirect to home page after successful login
+    } catch (error) {
+      console.error('Login error', error);
+      alert('Login failed, please check your credentials.');
+    }
+  };
 
-                // Call the onLogin callback and navigate to the layout page
-                onLogin();
-                navigate('/layout');
-            } else {
-                alert('Invalid username or password');
-            }
-        } catch (error) {
-            console.error('Login failed:', error);
-            alert('An error occurred. Please try again.');
-        }
-    };
-    
-    return (
-        <div>
-            <h1>Login</h1>
-            <form onSubmit={handleSubmit}>
-                <input 
-                    type="text" 
-                    value={username} 
-                    onChange={(e) => setUsername(e.target.value)} 
-                    placeholder="Username" 
-                    required 
-                />
-                <input 
-                    type="password" 
-                    value={password} 
-                    onChange={(e) => setPassword(e.target.value)} 
-                    placeholder="Password" 
-                    required 
-                />
-                <button type="submit">Login</button>
-            </form>
-        </div>
-    );
-};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    loginUser(credentials);
+  };
 
-Login.propTypes = {
-    onLogin: PropTypes.func.isRequired, // Expect onLogin to be a required function
-};
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setCredentials((prev) => ({ ...prev, [name]: value }));
+  };
 
-export default Login;
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        name="username"
+        placeholder="Username"
+        value={credentials.username}
+        onChange={handleChange}
+        required
+      />
+      <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        value={credentials.password}
+        onChange={handleChange}
+        required
+      />
+      <button type="submit">Login</button>
+    </form>
+  );
+}
