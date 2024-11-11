@@ -1,60 +1,91 @@
-import { useState, useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { BiLogInCircle } from "react-icons/bi"
+import { useDispatch, useSelector } from 'react-redux'
+import { login, reset, getUserInfo } from '../auth/authSlice'
+import { toast } from 'react-toastify'
+import Spinner from "../components/Spinner"
 
-export default function Login() {
-  const [credentials, setCredentials] = useState({ username: '', password: '' });
-  const { setAuth, setUsername } = useContext(AuthContext);
-  const navigate = useNavigate();
+const LoginPage = () => {
 
-  const loginUser = async (credentials) => {
-    try {
-      const response = await axios.post('/api/login/', credentials);
-      const { token, username } = response.data;
+    const [formData, setFormData] = useState({
+        "email": "",
+        "password": "",
+    })
+    const { email, password } = formData
 
-      // Store token and username in both context and storage
-      localStorage.setItem('token', token);
-      localStorage.setItem('username', username);
-      setAuth(token);
-      setUsername(username);
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
-      navigate('/home'); // Redirect to home page after successful login
-    } catch (error) {
-      console.error('Login error', error);
-      alert('Login failed, please check your credentials.');
+    const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth)
+
+    const handleChange = (e) => {
+        setFormData((prev) => ({
+            ...prev,
+            [e.target.name]: e.target.value
+        })
+        )
     }
-  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    loginUser(credentials);
-  };
+    const handleSubmit = (e) => {
+        e.preventDefault()
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setCredentials((prev) => ({ ...prev, [name]: value }));
-  };
+        const userData = {
+            email,
+            password,
+        }
+        dispatch(login(userData))
+    }
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        name="username"
-        placeholder="Username"
-        value={credentials.username}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        value={credentials.password}
-        onChange={handleChange}
-        required
-      />
-      <button type="submit">Login</button>
-    </form>
-  );
+    
+
+    useEffect(() => {
+        if (isError) {
+            toast.error(message)
+        }
+
+        if (isSuccess && user) {
+            localStorage.setItem('token', user.token);
+            localStorage.setItem('email', user.email);
+            navigate("/home")
+        }
+
+        dispatch(reset())
+        dispatch(getUserInfo())
+
+    }, [isError, isSuccess, user, navigate, dispatch])
+
+
+
+    return (
+        <>
+            <div className="container auth__container">
+                <h1 className="main__title">Login <BiLogInCircle /></h1>
+
+                {isLoading && <Spinner />}
+
+                <form className="auth__form">
+                    <input type="text"
+                        placeholder="email"
+                        name="email"
+                        onChange={handleChange}
+                        value={email}
+                        required
+                    />
+                    <input type="password"
+                        placeholder="password"
+                        name="password"
+                        onChange={handleChange}
+                        value={password}
+                        required
+                    />
+                    <Link to="/reset-password">Forget Password ?</Link>
+
+                    <button className="btn btn-primary" type="submit" onClick={handleSubmit}>Login</button>
+                </form>
+            </div>
+        </>
+    )
 }
+
+export default LoginPage

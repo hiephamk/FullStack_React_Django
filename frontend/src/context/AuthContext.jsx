@@ -5,35 +5,31 @@ import { createContext, useState, useEffect } from 'react';
 export const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [auth, setAuth] = useState(localStorage.getItem('token') || sessionStorage.getItem('token'));
-  const [username, setUsername] = useState(localStorage.getItem('username') || sessionStorage.getItem('username'));
-  const [user_id, setUserId] = useState(localStorage.getItem('user_id') || sessionStorage.getItem('user_id'));
+  const [email, setEmail] = useState(localStorage.getItem('email') || sessionStorage.getItem('email'));
+
 
   useEffect(() => {
     // Store auth and username in localStorage/sessionStorage when they change
     if (auth) {
       localStorage.setItem('token', auth);
-      localStorage.setItem('username', username);
-      localStorage.setItem('user_id', user_id);
+      localStorage.setItem('email', email);
     } else {
       localStorage.removeItem('token');
-      localStorage.removeItem('username');
-      localStorage.removeItem('user_id');
+      localStorage.removeItem('email');
     }
-  }, [auth, username, user_id]);
+  }, [auth, email]);
 
   const logout = () => {
     localStorage.removeItem('token');
-    localStorage.removeItem('username');
-    localStorage.removeItem('user_id');
+    localStorage.removeItem('email');
     sessionStorage.removeItem('token');
-    sessionStorage.removeItem('username');
-    sessionStorage.removeItem('user_id');
+    sessionStorage.removeItem('email');
     setAuth(null);
-    setUsername(null);
+    setEmail(null);
   };
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth, username, setUsername, user_id, setUserId, logout }}>
+    <AuthContext.Provider value={{ auth, setAuth, email, setEmail, logout }}>
       {children}
     </AuthContext.Provider>
   );

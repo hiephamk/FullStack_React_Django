@@ -11,7 +11,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=False)
     is_student = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
-
+    image = models.ImageField(_("Profile Image"), upload_to="profile_images/", null=True, blank=True)
+    
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ["first_name", "last_name"]
     
@@ -20,8 +21,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = _("User")
         verbose_name_plural = _("Users")
+
     def __str__(self):
         return self.email
     @property
-    def get_ful_name(self):
+    def get_full_name(self):
         return f"{self.first_name} {self.last_name}"

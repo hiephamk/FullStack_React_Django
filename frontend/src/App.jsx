@@ -1,34 +1,45 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Nav from "./components/Nav"
+import LoginPage from "./pages/Login"
+//import Login from "./temp/Login"
+import Home from './pages/Home'
+import RegisterPage from "./pages/Register"
+import ResetPasswordPage from "./pages/ResetPassword"
+import ResetPasswordPageConfirm from "./pages/ResetPasswordConfirm";
+import ActivatePage from "./pages/Activate";
+import NotFoundPage from "./pages/NotFound";
+import Layout from './pages/Layout'
+import Profile from './pages/Profile'
+import Community from './pages/Community'
+import Information from "./pages/Information";
 
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { useContext } from 'react';
-import Register from './auth/Register';
-import Login from './auth/Login';
-import Layout from './pages/Layout';
-import Home from './pages/Home';
-import Profile from './pages/Profile';
-//import NotFound from './pages/NotFound';
-import { AuthContext } from './context/AuthContext';
-import Community from './pages/Community';
 
 function App() {
-  const { auth } = useContext(AuthContext); // Retrieve auth state from context
 
   return (
-    <Router>
+    <>
+      <Router>
+        <Nav />
         <Routes>
-        {/* Route for Login Page */}
-            <Route path="/" element={auth ? <Navigate to="/home" /> : <Login/>} />
-            <Route path="/register" element={<Register />} /> 
-        {/* Protected Route for Layout Page */}
-             <Route path="/home/*" element={auth ? <Layout /> : <Navigate to="/" />} >
-              <Route path="home" element={<Home />} />
-              <Route path="profile" element={<Profile />} />
-            </Route> 
-              <Route path="home/community" element={<Community />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/activate/:uid/:token" element={<ActivatePage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/password/reset/confirm/:uid/:token" element={<ResetPasswordPageConfirm />} />
+          <Route path="*" element={<NotFoundPage />} />
+          <Route path="/home" element={<Layout />}>
+            <Route path="profile" element={<Profile />} /> 
+            <Route path="info" element={<Information />} /> 
+          </Route>
+          <Route path="home/community" element={<Community />} />
         </Routes>
-    </Router>
-  );
+      </Router>
+      <ToastContainer />
+    </>
+  )
 }
 
-export default App;
-
+export default App

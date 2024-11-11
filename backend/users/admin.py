@@ -9,9 +9,9 @@ class UserAdmin(BaseUserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = User
-    list_display = ["email", "first_name", "last_name", "is_staff", "is_active", "is_student"]
+    list_display = ["email", "first_name", "last_name","image", "is_staff", "is_active", "is_student"]
     list_display_links = ["email"]
-    list_filter = ["email", "first_name", "last_name", "is_staff", "is_active", "is_student"]
+    list_filter = ["email", "first_name", "last_name","image", "is_staff", "is_active", "is_student"]
     search_fields = ["email", "first_name", "last_name"]
     fieldsets = (
         (
@@ -22,7 +22,7 @@ class UserAdmin(BaseUserAdmin):
         (
             _("Personal Information"),
             {
-                "fields": ('first_name', 'last_name',)
+                "fields": ('first_name', 'last_name',"image",)
             },
         ),
         (
@@ -41,7 +41,7 @@ class UserAdmin(BaseUserAdmin):
     add_fieldsets = (
             (None, {
                 "classes": ("wide",),
-                "fields": ("email", "first_name", "last_name", "password1", "password2", "is_staff", "is_active", "is_student"),
+                "fields": ("email", "first_name", "last_name","image", "password1", "password2", "is_staff", "is_active", "is_student"),
             },),
         )
     

@@ -1,12 +1,12 @@
 // src/pages/NotFound.js
+import React from 'react'
 
-const NotFound = () => {
+const NotFoundPage = () => {
     return (
         <div>
-            <h2>404 - Page Not Found</h2>
-            <p>The page you&apos;re looking for doesn&lsquo;t exist or you don&apos;t have access to it.</p>
+            <h1>Page not found (404)</h1>
         </div>
-    );
-};
+    )
+}
 
-export default NotFound;
+export default NotFoundPage
