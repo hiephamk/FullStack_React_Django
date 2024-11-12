@@ -3,11 +3,8 @@ import { useState } from 'react'
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Image from 'react-bootstrap/Image';
-import Col from 'react-bootstrap/Col';
-//import { useNavigate } from 'react-router-dom';
+import Profile from './ProfileImg';
+
 
 const CreateNewComment = ({postId}) => {
     const [text, setText] = useState('');
@@ -32,15 +29,20 @@ const CreateNewComment = ({postId}) => {
     
   return (
     <div >
-        <form onSubmit={handlePost}>
-            <div className='postList-content'>
+        <form onSubmit={handlePost} className='createComment-container'>
+            <div className='profile-img-post'>
+              <Profile/>
+            </div>
+            <div>
               <input
+                className='comment-box-text'
                 type="text" 
                 placeholder=""
                 value={text} onChange={(e) => setText(e.target.value)} 
-                style={{ height: '50px', width:'80%' }}
               />
-              <button type='submit' >Post</button>
+            </div>
+            <div>
+              <button className='btn btn-primary' type='submit' >Post</button>
             </div>
         </form>
     </div>

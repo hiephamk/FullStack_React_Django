@@ -4,16 +4,16 @@ import 'react-toastify/dist/ReactToastify.css';
 import Nav from "./components/Nav"
 import LoginPage from "./pages/Login"
 //import Login from "./temp/Login"
-import Home from './pages/Home'
+import Home from './pages/Index'
 import RegisterPage from "./pages/Register"
 import ResetPasswordPage from "./pages/ResetPassword"
 import ResetPasswordPageConfirm from "./pages/ResetPasswordConfirm";
 import ActivatePage from "./pages/Activate";
 import NotFoundPage from "./pages/NotFound";
 import Layout from './pages/Layout'
-import Profile from './pages/Profile'
+import Profile from './pages/ProfileImg'
 import Community from './pages/Community'
-import Information from "./pages/Information";
+import Information from "./pages/Home";
 
 
 function App() {
@@ -31,8 +31,8 @@ function App() {
           <Route path="/password/reset/confirm/:uid/:token" element={<ResetPasswordPageConfirm />} />
           <Route path="*" element={<NotFoundPage />} />
           <Route path="/home" element={<Layout />}>
-            <Route path="profile" element={<Profile />} /> 
-            <Route path="info" element={<Information />} /> 
+            <Route index element={<Information />} />
+            <Route path="profile" element={<Profile />} />
           </Route>
           <Route path="home/community" element={<Community />} />
         </Routes>
@@ -43,3 +43,4 @@ function App() {
 }
 
 export default App
+

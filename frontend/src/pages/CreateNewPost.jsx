@@ -4,13 +4,6 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; 
-//import DOMPurify from 'dompurify';
-//import Button from 'react-bootstrap/esm/Button';
-// import Form from 'react-bootstrap/Form';
-// import InputGroup from 'react-bootstrap/InputGroup';
-// import FloatingLabel from 'react-bootstrap/FloatingLabel';
-// import Button from 'react-bootstrap/Button';
-//import { useNavigate } from 'react-router-dom';
 
 const CreateNewPost = () => {
     const [content, setContent] = useState('');
@@ -31,13 +24,13 @@ const CreateNewPost = () => {
       };
     
   return (
-    <div className='createList-container'>
+    <div>
       <form onSubmit={handlePost}>
         <ReactQuill
           value={content} 
           onChange={setContent}
         />
-        <button type='submit'>Post</button>
+        <button className='btn btn-primary ' type='submit'>Post</button>
       </form>
     </div>
   )

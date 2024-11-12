@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import PropTypes from 'prop-types';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // Importing default styling for Quill
+import 'react-quill/dist/quill.snow.css';
 
 const QuillEditor = ({ value, onChange, placeholder, onSubmit }) => {
   const [editorValue, setEditorValue] = useState(value || "");
@@ -15,13 +16,19 @@ const QuillEditor = ({ value, onChange, placeholder, onSubmit }) => {
       [{ 'background': [] }],
       ['link', 'blockquote'],
       ['image'],
-      ['clean'], // For clearing the content
+      ['clean'],
     ],
   };
 
+  const formats = [
+    'font', 'size', 'align', 'list', 'bullet', 
+    'bold', 'italic', 'underline', 'strike', 
+    'color', 'background', 'link', 'blockquote', 'image'
+  ];
+
   const handleEditorChange = (value) => {
     setEditorValue(value);
-    onChange(value); // Optional: You can send the content up to parent component
+    onChange(value);
   };
 
   const handleSubmit = (e) => {
@@ -38,6 +45,7 @@ const QuillEditor = ({ value, onChange, placeholder, onSubmit }) => {
           value={editorValue}
           onChange={handleEditorChange}
           modules={modules}
+          formats={formats}
           placeholder={placeholder}
         />
         <div className="createList-content">
@@ -46,6 +54,13 @@ const QuillEditor = ({ value, onChange, placeholder, onSubmit }) => {
       </form>
     </div>
   );
+};
+
+QuillEditor.propTypes = {
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  placeholder: PropTypes.string,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 export default QuillEditor;

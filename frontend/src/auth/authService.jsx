@@ -8,6 +8,7 @@ const ACTIVATE_URL = `${BACKEND_DOMAIN}/api/v1/auth/users/activation/`
 const RESET_PASSWORD_URL = `${BACKEND_DOMAIN}/api/v1/auth/users/reset_password/`
 const RESET_PASSWORD_CONFIRM_URL = `${BACKEND_DOMAIN}/api/v1/auth/users/reset_password_confirm/`
 const GET_USER_INFO = `${BACKEND_DOMAIN}/api/v1/auth/users/me/`
+const GET_USER_IMG = `${BACKEND_DOMAIN}/api/account/`
 
 
 
@@ -102,11 +103,22 @@ const getUserInfo = async (accessToken) => {
 
     const response = await axios.get(GET_USER_INFO, config)
 
+
+    return response.data
+}
+const getUserImg = async (accessToken) => {
+    const config = {
+        headers: {
+            "Authorization": `Bearer ${accessToken}`
+        }
+    }
+
+    const response = await axios.get(GET_USER_IMG, config)
+
+
     return response.data
 }
 
-
-
-const authService = { register, login, logout, activate, resetPassword, resetPasswordConfirm, getUserInfo }
+const authService = { register, login, logout, activate, resetPassword, resetPasswordConfirm, getUserInfo, getUserImg}
 
 export default authService

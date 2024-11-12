@@ -6,6 +6,7 @@ import { Outlet } from 'react-router-dom'
 import { Link, useNavigate } from 'react-router-dom'
 
 
+
 const Dashboard = () => {
 
     const navigate = useNavigate()
@@ -21,32 +22,29 @@ const Dashboard = () => {
         <nav className='page-container'>
           <div className='nav-content'>
               <Link to="/home"><img src="https://www.hamk.fi/wp-content/uploads/2023/09/HAMK-logo-desktop.svg" alt="" /></Link>
-              <Link to="/home">Home</Link>
               <Link to="/home/info">Information</Link>
-              <h1>Welcome, {userInfo.first_name} {userInfo.last_name} </h1>
               <Link to="/home/community">Community</Link>
-              <Link className='nav-childs' to="/" onClick={handleLogout}>Logout</Link>
-
-
-
+              <Link to="/home/profile">Profile</Link>
+              <div>
+                <h5>{userInfo.first_name} {userInfo.last_name} </h5>
+                <Link className='nav-childs' to="/" onClick={handleLogout}>Logout</Link>
+              </div>
           </div>
           <div className='body-container'>
             <div className='left-nav-container'>
                 <div className="left-nav-content">
-                  <Link to="/home/profile">Profile</Link>
                   <Link to="/home/community">Community</Link>
                   <Link to="/home/info">Information</Link>
                 </div>
             </div>
             
-            <div className='main-layout-container'>
-                <div className="main-layout-content">
-                    <Outlet/>
-                </div>
+            <div className='main-container'>
+              <div className="main-content">
+                  <Outlet/>
+              </div>
             </div>
             <div className='right-nav-container'>
                 <div className='right-nav-content'>
-                  <Link to="/Home">Home</Link>
                   <Link to="/home/community">Community</Link>
                   <Link to="/home/info">Information</Link>
                 </div>

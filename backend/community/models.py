@@ -14,6 +14,13 @@ class Post(models.Model):
         #return f"{self.title} by {self.author.first_name} {self.author.last_name}"
         return f"{self.title} by {self.author.get_full_name()} created on {self.created_at.strftime('%b %d, %Y')}"
 
+    @property
+    def author_profile_img(self):
+        account = getattr(self.author, 'account', None)
+        if account and account.profile_img:
+            return account.profile_img.url  # Return the URL of the profile image
+        return None
+
 class Comment(models.Model):
     text = models.TextField()
     post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
@@ -24,3 +31,10 @@ class Comment(models.Model):
     def __str__(self):
         #return f"{self.text} by {self.author.first_name} {self.author.last_name}"
         return f'Comment by {self.author.get_full_name()}'
+
+    @property
+    def author_profile_img(self):
+        account = getattr(self.author, 'account', None)
+        if account and account.profile_img:
+            return account.profile_img.url  # Return the URL of the profile image
+        return None

@@ -11,6 +11,7 @@ const initialState = {
     isSuccess: false,
     isLoading: false,
     message: "",
+    userImg: "",
 }
 
 export const register = createAsyncThunk(
@@ -97,6 +98,21 @@ export const resetPasswordConfirm = createAsyncThunk(
 
 export const getUserInfo = createAsyncThunk(
     "auth/getUserInfo",
+    async (_, thunkAPI) => {
+        try {
+            const accessToken = thunkAPI.getState().auth.user.access
+            return await authService.getUserInfo(accessToken)
+        } catch (error) {
+            const message = (error.response && error.response.data
+                && error.response.data.message) ||
+                error.message || error.toString()
+
+            return thunkAPI.rejectWithValue(message)
+        }
+    }
+)
+export const getUserImg = createAsyncThunk(
+    "auth/getUserImg",
     async (_, thunkAPI) => {
         try {
             const accessToken = thunkAPI.getState().auth.user.access
@@ -204,6 +220,10 @@ export const authSlice = createSlice({
             })
             .addCase(getUserInfo.fulfilled, (state, action) => {
                 state.userInfo = action.payload
+                localStorage.setItem("user", JSON.stringify({ ...state.user, ...action.payload }));
+            })
+            .addCase(getUserImg.fulfilled, (state, action) => {
+                state.userImg = action.payload
                 localStorage.setItem("user", JSON.stringify({ ...state.user, ...action.payload }));
             })
     }

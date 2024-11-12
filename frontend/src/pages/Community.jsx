@@ -4,6 +4,7 @@ import { useSelector, useDispatch} from 'react-redux'
 import { logout, reset } from '../auth/authSlice'
 import CreateNewPost from './CreateNewPost';
 import PostList from './PostList';
+import Profile from './ProfileImg';
 
 const Commnunity = () => {
   const navigate = useNavigate()
@@ -21,6 +22,7 @@ const Commnunity = () => {
     <div className='page-container'>
       <div className="nav-content">
         <a href="/home">Home</a>
+        <Profile/>
         <h1>Welcome, {userInfo.first_name} {userInfo.last_name} </h1>
         <button onClick={handleLogout}>Logout</button>
       </div>
@@ -46,10 +48,12 @@ const Commnunity = () => {
           </div>
         </div>
         <div className='main-container'>
-          <div className='postCreate-container'>
-            <CreateNewPost/>
+          <div className='post-container'>
+            <div className='post-content'>
+              <CreateNewPost/>
+            </div>
           </div>
-          <div>
+          <div >
             <PostList/>
           </div>
         </div>

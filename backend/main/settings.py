@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'djoser',
     "corsheaders",
     'users',
-    'community'
+    'community',
+    'account',
 
 ]
 
@@ -116,7 +117,7 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = True
-DATE_FORMAT = 'b d, Y'
+DATE_FORMAT = 'b d, Y, H'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
@@ -136,6 +137,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DATE_FORMAT': '%b %d, %Y',
+
 }
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": (
@@ -165,6 +167,7 @@ DJOSER = {
         'user': "users.serializers.CreateUserSerializer",
         'user_delete': "djoser.serializers.UserDeleteSerializer",      
     },
+    'USER_SERIALIZER': 'users.serializers.CustomUserSerializer',
 }
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"

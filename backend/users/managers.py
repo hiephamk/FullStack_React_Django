@@ -12,7 +12,7 @@ class AccountManager(BaseUserManager):
         except ValidationError:
             raise ValueError(_("You must provide a valid email"))
     
-    def create_user(self, first_name, last_name, email, password, image, **extra_fields):
+    def create_user(self, first_name, last_name, email, password, **extra_fields):
         if not first_name:
             raise ValueError(_("User must submit a first name"))
         if not first_name:
@@ -26,8 +26,7 @@ class AccountManager(BaseUserManager):
         user = self.model(
             first_name = first_name,
             last_name = last_name,
-            email=email, 
-            image=image,
+            email=email,
             **extra_fields
             )
             
