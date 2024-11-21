@@ -21,8 +21,10 @@ const Nav = () => {
     return (
         <nav className="navbar" style={{borderBottom:'2px solid #fff', fontSize: '24px'}}>
             {user ?
-                <>
-                    <NavLink className="logo" to="/home">Logo</NavLink>
+                <>  
+                    <NavLink className="logo" to="/home">
+                      <img style={{width:'auto',height:'30px'}} src="https://www.hamk.fi/wp-content/uploads/2024/01/HAMK_Logo_text_small_ENG_NEGA-1.svg" alt="logo" />
+                    </NavLink>
                     <NavLink className='nav-childs' to="/home">Home</NavLink>
                     <NavLink className='nav-childs' to="/community">Communinty</NavLink>
                     <NavLink className='nav-childs' to="/" onClick={handleLogout}>Logout</NavLink>

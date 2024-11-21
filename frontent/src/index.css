@@ -12,7 +12,7 @@
 }
 
 :root {
-  --color-bg: #1f1f38;
+  --color-bg: #f8f8f8;
   --color-bg-variant: #28284f;
   --color-primary: #007bff;
   /* Blue */
@@ -40,8 +40,11 @@
 body {
   font-family: 'Poppins', sans-serif;
   background: var(--color-bg);
-  color: var(--color-white);
+  /* color: var(--color-white); */
   line-height: 1.7;
+  margin:0;
+  padding: 0;
+  box-sizing: border-box;
 
 }
 
@@ -214,10 +217,14 @@ img {
 
 /* Base styles for the navigation bar */
 .navbar {
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--color-bg);
+  background-color: #111;
   padding: 1rem;
 }
 
@@ -242,7 +249,6 @@ img {
 
 .nav-childs {
   text-decoration: none;
-  color: var(--color-white);
   padding: 0.5rem 1rem;
   border-radius: 4px;
   transition: var(--transition);
@@ -354,4 +360,53 @@ img {
   100% {
     transform: rotate(360deg);
   }
+}
+.page-container {
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 100px;
+  display: flex;
+  min-height: 100vh;
+  justify-content: space-evenly;
+}
+
+
+.left-container, .right-container {
+  box-sizing: border-box;
+  position: fixed;
+  top:100px;
+  width: 20%;
+  
+
+}
+.left-container{
+  left: 10px;
+  border-right: 2px solid #1113;
+  height: 100vh;
+  margin-right: 20px;
+}
+.right-container{
+  right: 10px;
+  border-left: 2px solid #1113;
+  height: 100vh;
+
+}
+.main-container {
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+.left-content, .right-content,.main-content {
+  box-sizing: border-box;
+
+  border-radius: 7px;
+
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+}
+.left-content {
+  margin-right: 20px;
 }

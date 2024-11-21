@@ -58,14 +58,13 @@ const CreateComment = ({ postId, setComments }) => {
     <div>
       <form onSubmit={handlePost} className="d-flex justify-content-evenly align-self-center my-2 ">
         <input
-            style={{width: '70%', height:'50px'}}
-            className="rounded px-2"
+            style={{width: '70%', height:'50px',boxShadow:'2px 2px #1113', border:'1px solid #111', padding:'10px', borderRadius:'30px'}}
             type="text"
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder="Write a comment..."
         />
-        <button type="submit" className='px-5, rounded' style={{border:'1px solid #fff', padding:'0 20px'}}>Send</button>
+        <button type="submit" style={{boxShadow:'2px 2px #1113',border:'1px solid #111',borderRadius:'7px', padding:'0 20px'}}>Send</button>
       </form>
     </div>
   );

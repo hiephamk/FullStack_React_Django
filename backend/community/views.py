@@ -3,22 +3,55 @@ from django.shortcuts import get_object_or_404
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import Post, Comment, Like
-from .serializers import PostSerializer, CommentSerializer
+from .models import Post, Comment, Like, Topic, SubTopic
+from .serializers import PostSerializer, CommentSerializer, TopicSerializer, SubTopicSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
+class TopicListCreateView(generics.ListAPIView):
+    serializer_class = TopicSerializer
+    queryset = Topic.objects.all()
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = [permissions.IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+class TopicDetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = TopicSerializer
+    queryset = Topic.objects.all()
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = [permissions.IsAuthenticated]
 
 
-# Post views
+
+class SubTopicListCreateView(generics.ListAPIView):
+    serializer_class = SubTopicSerializer
+    queryset = SubTopic.objects.all()
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+class SubTopicDetailView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = SubTopicSerializer
+    queryset = SubTopic.objects.all()
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = [permissions.IsAuthenticated]
+
 class PostListCreateView(generics.ListCreateAPIView):
-    queryset = Post.objects.all().order_by('-created_at')
+
     serializer_class = PostSerializer
     authentication_classes = [JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+    def get_queryset(self):
+        subtopic_id = self.request.query_params.get('subtopic', None)
+        if subtopic_id:
+            return Post.objects.filter(subtopic_id=subtopic_id)
+        return Post.objects.all()
 
 
 class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
