@@ -14,8 +14,10 @@ const CreateSubTopic = () => {
   const [selectedTopic, setSelectedTopic] = useState(null);
 
   const [newTopicTitle, setNewTopicTitle] = useState("");
-  const [newSubtopicTitle, setNewSubtopicTitle] = useState("");  useEffect(() => {
-  const fetchTopicsAndSubtopics = async () => {
+  const [newSubtopicTitle, setNewSubtopicTitle] = useState("");
+  
+  useEffect(() => {
+    const fetchTopicsAndSubtopics = async () => {
       if (!accessToken) return;
       const topicUrl = `http://127.0.0.1:8000/api/topics/`;
       const subtopicUrl = `http://127.0.0.1:8000/api/subtopics/`;

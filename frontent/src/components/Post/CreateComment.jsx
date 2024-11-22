@@ -1,30 +1,19 @@
 import { useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import ProfileImg from "../profileImg";
+import useAccessToken from "../../features/auth/token";
 
+// eslint-disable-next-line react/prop-types
 const CreateComment = ({ postId, setComments }) => {
   const { user, userInfo } = useSelector((state) => state.auth);
+  const accessToken = useAccessToken(user)
   const [text, setText] = useState("");
 
   const handlePost = async (e) => {
     e.preventDefault(); // Prevent page reload on form submit
 
-    let currentToken = user.access;
-    const refreshToken = async () => {
-      const refreshUrl = `http://127.0.0.1:8000/api/token/refresh/`;
-      try {
-        const res = await axios.post(refreshUrl, { refresh: user.refresh });
-        return res.data.access;
-      } catch (error) {
-        console.error("Error refreshing token:", error.response || error.message);
-        return null;
-      }
-    };
-
-    if (!currentToken) {
-      currentToken = await refreshToken();
-    }
-    if (!currentToken) {
+    if (!accessToken) {
       console.error("Unable to fetch data: No valid access token.");
       return;
     }
@@ -39,7 +28,7 @@ const CreateComment = ({ postId, setComments }) => {
         },
         {
           headers: {
-            Authorization: `Bearer ${currentToken}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         }
       );
@@ -57,8 +46,9 @@ const CreateComment = ({ postId, setComments }) => {
   return (
     <div>
       <form onSubmit={handlePost} className="d-flex justify-content-evenly align-self-center my-2 ">
+        <ProfileImg/>
         <input
-          style={{ width: '70%', height: '50px', boxShadow: '2px 2px #1113', border: '1px solid #111', padding: '10px', borderRadius: '30px' }}
+          style={{ width: '70%', height: '50px', boxShadow: '2px 2px #1113', border: '1px solid #111', padding: '20px', borderRadius: '30px' }}
           type="text"
           value={text}
           onChange={(e) => setText(e.target.value)}
@@ -69,5 +59,4 @@ const CreateComment = ({ postId, setComments }) => {
     </div>
   );
 };
-
 export default CreateComment;

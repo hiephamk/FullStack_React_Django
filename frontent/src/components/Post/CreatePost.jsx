@@ -46,7 +46,7 @@ const CreatePost = ({ subtopicId, setPosts, fetchPostsBySubtopic }) => {
 
   return (
     <div>
-      <form onSubmit={handlePost} style={{boxSizing:'border-box', width:'100%', display:'flex', justifyContent:'space-evenly', margin:'10px'}}>
+      <form onSubmit={handlePost} style={{boxSizing:'border-box', width:'80%', display:'flex', justifyContent:'space-evenly', margin:'10px'}}>
         <input
             style={{width: '80%', height:'50px', border:'1px solid #111',borderRadius:'10px',padding:'15px', boxShadow:'2px 2px #1113'}}
             type="text"

@@ -9,6 +9,8 @@ import { MdOutlineComment } from "react-icons/md";
 import { FaShareFromSquare } from "react-icons/fa6";
 import { GrLike } from "react-icons/gr";
 import CreatePost from '../components/Post/CreatePost'
+import UserImg from '../components/UserImg';
+import ProfileImg from '../components/profileImg';
 //import CreateSubtopic from '../components/Topic/CreateSubtopic';
 
 const TopicList = () => {
@@ -23,6 +25,7 @@ const TopicList = () => {
   const [selectedSubtopic, setSelectedSubtopic] = useState(null);
   const [likedPosts, setLikedPosts] = useState({});
   const [expandedPost, setExpandedPost] = useState(null);
+  const [newSubtopicTitle, setNewSubtopicTitle] = useState("");
 
 
   useEffect(() => {
@@ -68,7 +71,32 @@ const TopicList = () => {
       console.error('Error fetching posts:', error.response || error.message);
     }
   };
+  const handleCreateSubtopic = async () => {
+    if (!newSubtopicTitle || !selectedTopic) {
+      toast.error("Subtopic title cannot be empty, and a topic must be selected.");
+      return;
+    }
 
+    const subtopicUrl = `http://127.0.0.1:8000/api/subtopics/`;
+    const config = { headers: { Authorization: `Bearer ${accessToken}` } };
+
+    try {
+      const response = await axios.post(
+        subtopicUrl,
+        { subTopicTitle: newSubtopicTitle, 
+          topic: selectedTopic,
+          author: userInfo.id
+         },
+        config
+      );
+      setSubTopics((prev) => [...prev, response.data]);
+      setNewSubtopicTitle("");
+      toast.success("Subtopic created successfully!");
+    } catch (error) {
+      console.error("Error creating subtopic:", error.response || error.message);
+      toast.error("Failed to create subtopic.");
+    }
+  };
   const handleTopicClick = (topicId) => {
     setSelectedTopic(selectedTopic === topicId ? null : topicId);
     setSelectedSubtopic(null);
@@ -202,13 +230,30 @@ const TopicList = () => {
               {selectedTopic === topic.id && (
                 <div style={{ marginLeft: '10px', border:'2px solid #1113', textAlign:'center', borderRadius:'20px'}}>
                   <p style={{fontSize:'24px'}}><strong>Topic: {topic.topicTitle}</strong> </p>
+                  {selectedTopic === topic.id && (
+                  <div style={{ marginLeft: "10px" }}>
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="New Subtopic Title"
+                      value={newSubtopicTitle}
+                      onChange={(e) => setNewSubtopicTitle(e.target.value)}
+                    />
+                  
+                    <button onClick={handleCreateSubtopic}>
+                      Create
+                    </button>
+                  </div>
+                </div>
+              )}
                   {subtopics
                     .map((subtopic) => (
                       <div key={subtopic.id} style={{ display: 'block', margin: '5px 0' }} >
                         {selectedSubtopic === subtopic.id && (
-                          <p>
+                          <div>
                             <strong>Title: {subtopic.subTopicTitle}</strong>
-                          </p>
+                            <CreatePost subtopicId={selectedSubtopic} setPosts={setPosts} fetchPostsBySubtopic={fetchPostsBySubtopic}/>
+                          </div>
 
                         )}
                       </div>
@@ -219,24 +264,30 @@ const TopicList = () => {
           ))}
         </div>
         {selectedSubtopic && posts.length > 0 ? (
-          
           <div>
-            
-            <CreatePost subtopicId={selectedSubtopic} setPosts={setPosts} fetchPostsBySubtopic={fetchPostsBySubtopic}/>
           {posts
             .map((post) => (
             <div key={post.id} className="border rounded-3 my-2" style={{color:'#111', backgroundColor: '#fff', paddingTop:'20px'}}>
               
               <div className="rounded-2" style={{padding:'0 20px 0 20px'}}>
-                <div className="d-flex flex-column p-2" style={{fontSize:'18px'}}>
-                  <span ><strong>{post.author_name}</strong> </span>
-                  <span style={{fontSize: '12px'}}> {formatDate(post.created_at)}</span>
+                <div  style={{fontSize:'18px', display:'flex', alignItems:'center'}}>
+                  <div>
+                    <div>
+                      {post.author_profile_img && 
+                        <UserImg profileImg={`http://127.0.0.1:8000${post.author_profile_img}`} />
+                      }
+                    </div>
+                  </div>
+                  <div className="d-flex flex-column p-2">
+                    <span ><strong>{post.author_name}</strong> </span>
+                    <span style={{fontSize: '12px'}}> {formatDate(post.created_at)}</span>
+                  </div>
                 </div>
                 <p>{post.content}</p>
 
-                <p style={{color:'blue', borderBottom:'1px solid #111'}}><strong>{post.like_count} Like</strong></p>
+                <p style={{color:'blue', borderBottom:'1px solid #1113'}}><strong>{post.like_count} Like</strong></p>
               </div>
-              <div style={{display:'flex', justifyContent:'space-between', alignItems:'center',margin:'0 20px 20px', padding:'0 20px auto', borderBottom:'1px solid #fff' }}>
+              <div style={{display:'flex', borderBottom:'1px solid #1113', justifyContent:'space-between', alignItems:'center',margin:'0 20px 20px', padding:'0 20px auto' }}>
                 <button onClick={() => handleLike(post.id)}>
                 {likedPosts[post.id] ? '👍 Liked' : <p><GrLike /> Like</p>}
                 </button>
@@ -254,7 +305,12 @@ const TopicList = () => {
                     comments
                     .filter((comment) => comment.post === post.id)
                     .map((comment) => (
-                      <div key={comment.id} >
+                      <div key={comment.id} style={{display:'flex', alignItems:'center', padding:'20px'}}>
+                        <div>
+                        {comment.author_profile_img && 
+                          <UserImg profileImg={`http://127.0.0.1:8000${comment.author_profile_img}`} />
+                        }
+                        </div>
                         <p className="d-flex flex-column rounded " style={{backgroundColor:'#f8f8f8',margin:'10px', boxShadow:'2px 2px #1113', padding:'10px'}} >
                           <span ><strong>{comment.author_name}</strong></span>
                           <span style={{fontSize:'12px'}}>{formatDate(comment.created_at)}</span>
@@ -262,7 +318,9 @@ const TopicList = () => {
                         </p>
                       </div>
                     ))}
-                     <CreateComment postId={post.id} comments={comments} setComments={setComments}/>
+                     <div>
+                      <CreateComment postId={post.id} comments={comments} setComments={setComments}/>
+                      </div>
                   </div>
               )}
 
@@ -270,35 +328,8 @@ const TopicList = () => {
 
           ))}
         </div>
-          // posts.map((post) => (
-          //   <div key={post.id} className="post" style={{ marginBottom: '20px', border: '1px solid #ccc', padding: '10px' }}>
-          //     <div>
-          //       <strong>{post.author_name}</strong> - <span>{post.created_at}</span>
-          //     </div>
-          //     <p>{post.content}</p>
-          //     <textarea
-          //       value={newComment}
-          //       onChange={(e) => setNewComment(e.target.value)}
-          //       placeholder="Write your comment..."
-          //       style={{ width: '100%', marginTop: '10px' }}
-          //     />
-          //     <button onClick={() => handleCommentSubmit(post.id)} style={{ marginTop: '5px' }}>
-          //       Submit Comment
-          //     </button>
-          //     <div>
-          //       {comments
-          //         .filter((comment) => comment.post === post.id)
-          //         .map((comment) => (
-          //           <div key={comment.id} className="comment" style={{ padding: '10px', border: '1px solid #ccc', marginTop: '10px' }}>
-          //             <strong>{comment.author_name}</strong>
-          //             <p>{comment.text}</p>
-          //           </div>
-          //         ))}
-          //     </div>
-          //   </div>
-          // ))
         ) : (
-          <p>Select a subtopic to view posts.</p>
+          <p></p>
         )}
       </div>
 
