@@ -2,30 +2,18 @@ import { useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
+import useAccessToken from "../../features/auth/token";
 
 const CreatePost = ({ subtopicId, setPosts, fetchPostsBySubtopic }) => {
   const { user, userInfo } = useSelector((state) => state.auth);
+  const accessToken = useAccessToken(user)
   const [content, setContent] = useState("");
+  const [title, setTitle] = useState("");
 
   const handlePost = async (e) => {
     e.preventDefault(); // Prevent page reload on form submit
 
-    let currentToken = user.access;
-    const refreshToken = async () => {
-      const refreshUrl = `http://127.0.0.1:8000/api/token/refresh/`;
-      try {
-        const res = await axios.post(refreshUrl, { refresh: user.refresh });
-        return res.data.access;
-      } catch (error) {
-        console.error("Error refreshing token:", error.response || error.message);
-        return null;
-      }
-    };
-
-    if (!currentToken) {
-      currentToken = await refreshToken();
-    }
-    if (!currentToken) {
+    if (!accessToken) {
       console.error("Unable to fetch data: No valid access token.");
       return;
     }
@@ -40,7 +28,7 @@ const CreatePost = ({ subtopicId, setPosts, fetchPostsBySubtopic }) => {
         },
         {
           headers: {
-            Authorization: `Bearer ${currentToken}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         }
       );

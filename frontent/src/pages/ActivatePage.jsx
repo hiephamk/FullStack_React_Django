@@ -8,7 +8,6 @@ import Spinner from '../components/Spinner'
 
 const ActivatePage = () => {
 
-
     const { uid, token } = useParams()
     const dispatch = useDispatch()
     const navigate = useNavigate()

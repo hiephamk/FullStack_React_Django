@@ -4,11 +4,11 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import Post, Comment, Like, Topic, SubTopic
-from .serializers import PostSerializer, CommentSerializer, TopicSerializer, SubTopicSerializer
+from .serializers import PostSerializer, CommentSerializer, TopicSerializer,SubTopicSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
-class TopicListCreateView(generics.ListAPIView):
+class TopicListCreateView(generics.ListCreateAPIView):
     serializer_class = TopicSerializer
     queryset = Topic.objects.all()
     authentication_classes = (JWTAuthentication,)
@@ -24,8 +24,7 @@ class TopicDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
 
-
-class SubTopicListCreateView(generics.ListAPIView):
+class SubTopicListCreateView(generics.ListCreateAPIView):
     serializer_class = SubTopicSerializer
     queryset = SubTopic.objects.all()
     authentication_classes = (JWTAuthentication,)
@@ -39,7 +38,6 @@ class SubTopicDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
 class PostListCreateView(generics.ListCreateAPIView):
-
     serializer_class = PostSerializer
     authentication_classes = [JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]

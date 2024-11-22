@@ -8,7 +8,7 @@ const Dashboard = () => {
 
 
     return (
-        <div>
+        <div className='container page-container'>
             <h1>Welcome, {userInfo.first_name} </h1>
         </div>
     )

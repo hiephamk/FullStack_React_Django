@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Comment, Topic, SubTopic
+from .models import Post, Comment, Topic,SubTopic
 
 class TopicAdmin(admin.ModelAdmin):
     list_display = ('topicTitle',)

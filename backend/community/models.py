@@ -3,7 +3,7 @@ from django.conf import settings
 
 class Topic(models.Model):
     topicTitle = models.CharField(max_length=255)
-    topicDescription = models.TextField()
+    topicDescription = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -19,7 +19,7 @@ class SubTopic(models.Model):
     def __str__(self):
         return self.subTopicTitle
 class Post(models.Model):
-    #title = models.CharField(max_length=200)
+    #title = models.CharField(max_length=200, default='Post Title')
     content = models.TextField()
     subtopic = models.ForeignKey(SubTopic, related_name='posts', on_delete=models.CASCADE, null=True, blank=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

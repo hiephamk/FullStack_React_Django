@@ -9,6 +9,7 @@ import { MdOutlineComment } from "react-icons/md";
 import { FaShareFromSquare } from "react-icons/fa6";
 import { GrLike } from "react-icons/gr";
 import CreatePost from '../components/Post/CreatePost'
+//import CreateSubtopic from '../components/Topic/CreateSubtopic';
 
 const TopicList = () => {
   const { user, userInfo } = useSelector((state) => state.auth) || {};
@@ -194,12 +195,34 @@ const TopicList = () => {
 
       {/* Middle Section */}
       <div className="main-container">
-        <h4>Posts</h4>
-        <div style={{borderBottom:'2px solid #fff'}}>
-          <CreatePost subtopicId={selectedSubtopic} setPosts={setPosts} fetchPostsBySubtopic={fetchPostsBySubtopic}/>
+        
+        <div className='left-content'>
+          {topics.map((topic) => (
+            <div key={topic.id}>
+              {selectedTopic === topic.id && (
+                <div style={{ marginLeft: '10px', border:'2px solid #1113', textAlign:'center', borderRadius:'20px'}}>
+                  <p style={{fontSize:'24px'}}><strong>Topic: {topic.topicTitle}</strong> </p>
+                  {subtopics
+                    .map((subtopic) => (
+                      <div key={subtopic.id} style={{ display: 'block', margin: '5px 0' }} >
+                        {selectedSubtopic === subtopic.id && (
+                          <p>
+                            <strong>Title: {subtopic.subTopicTitle}</strong>
+                          </p>
+
+                        )}
+                      </div>
+                    ))}
+                </div>
+              )}
+            </div>
+          ))}
         </div>
         {selectedSubtopic && posts.length > 0 ? (
+          
           <div>
+            
+            <CreatePost subtopicId={selectedSubtopic} setPosts={setPosts} fetchPostsBySubtopic={fetchPostsBySubtopic}/>
           {posts
             .map((post) => (
             <div key={post.id} className="border rounded-3 my-2" style={{color:'#111', backgroundColor: '#fff', paddingTop:'20px'}}>

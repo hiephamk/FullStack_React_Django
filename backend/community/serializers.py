@@ -12,12 +12,14 @@ class TopicSerializer(serializers.ModelSerializer):
         fields = '__all__'
     def get_author_name(self, obj):
         return f"{obj.author.first_name} {obj.author.last_name}" if obj.author else None
+
 class SubTopicSerializer(serializers.ModelSerializer):
     class Meta:
         model = SubTopic
         fields = '__all__'
     def get_author_name(self, obj):
         return f"{obj.author.first_name} {obj.author.last_name}" if obj.author else None
+
 class CommentSerializer(serializers.ModelSerializer):
     author_profile_img = serializers.ReadOnlyField()
     author_name = serializers.SerializerMethodField()
