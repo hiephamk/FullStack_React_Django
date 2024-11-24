@@ -12,6 +12,10 @@ import ActivatePage from "./pages/ActivatePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import PrivateRoute from "./components/navigation/PrivateRoute";
 import Community from "./pages/Community";
+import UserProfile from "./components/Account/UserProfile";
+import TopicList from "./components/Post/TopicList";
+import TopicContent from './components/Post/TopicContent'
+import PostAndCommentList from "./components/Post/PostAndCommentList";
 
 function App() {
   return (
@@ -25,8 +29,12 @@ function App() {
           <Route path="/activate/:uid/:token" element={<ActivatePage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/password/reset/confirm/:uid/:token" element={<ResetPasswordPageConfirm />} />
-          <Route path="/home" element={<PrivateRoute element={<Dashboard />}/>} />
-          <Route path="/community" element={<PrivateRoute element={<Community />}/>} />
+          <Route path="/home" element={<PrivateRoute element={<Dashboard />} />} />
+          <Route path="/community" element={<PrivateRoute element={<Community />} />}>
+            <Route index element={<TopicList />} />
+            <Route path=":subtopicId" element={<TopicContent />} />
+            <Route path="/community/:lookupField/:lookupValue" element={<UserProfile />} />
+          </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Router>

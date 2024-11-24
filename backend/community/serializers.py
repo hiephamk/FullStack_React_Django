@@ -23,10 +23,11 @@ class SubTopicSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     author_profile_img = serializers.ReadOnlyField()
     author_name = serializers.SerializerMethodField()
-
+    accountId = serializers.SerializerMethodField()
+    profile = serializers.SerializerMethodField()
     class Meta:
         model = Comment
-        fields = ['id', 'text', 'author', 'post','created_at', 'author_name', 'author_profile_img', 'like_count']
+        fields = ['id', 'text', 'author','profile', 'post','created_at', 'author_name','accountId','author_profile_img', 'like_count']
 
     def get_author_name(self, obj):
         return f"{obj.author.first_name} {obj.author.last_name}" if obj.author else None
@@ -35,6 +36,17 @@ class CommentSerializer(serializers.ModelSerializer):
         if obj.author.account and obj.author.account.profile_img:
             return obj.author.account.profile_img.url  # Get the image URL
         return None
+    def get_accountId(self, obj):
+        if obj.author.account and obj.author.account.id:
+            return obj.author.account.id  # Get the userId
+        return None
+    def get_profile(self, obj):
+        if obj.author.account and obj.author.account.profile:
+            return obj.author.account.profile  # Get the userId
+        return None
+
+    def get_author_lookup_key(self, obj):
+        return obj.author.account.lookup_key
 
 class PostSerializer(serializers.ModelSerializer):
     author_profile_img = serializers.ReadOnlyField()

@@ -38,7 +38,8 @@ const CreateTopic = () => {
   return (
     <div>
       <form onClick={handleCreateTopic}>
-        <input 
+        <input
+          style={{border:'1px solid #1113'}}
           type="text"
           value={newSubtopicTitle}
           onChange={(e) => setNewSubtopicTitle(e.target.value)}
