@@ -12,8 +12,9 @@ urlpatterns = [
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/', include('community.urls')),
-    path('api/', include('account.urls'))
-
+    path('api/', include('account.urls')),
+    path('api/', include('chat.urls')),
+    path('api/', include('mychannel.urls')),
 ]
 #+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 if settings.DEBUG:

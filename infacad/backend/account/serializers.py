@@ -32,7 +32,8 @@ class AccountSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(source='user.email', read_only=True)
     class Meta:
         model = Account
-        fields = ['id','user','full_name', 'email', 'birth_date', 'profile_img', 'aboutMe', 'created_at', 'updated_at','phoneNumber']
+        fields = '__all__'
+            #['id','user','full_name', 'email', 'birth_date', 'profile_img', 'aboutMe', 'created_at', 'updated_at','phoneNumber']
 
     def create(self, validated_data):
         # Creating a new account for the user

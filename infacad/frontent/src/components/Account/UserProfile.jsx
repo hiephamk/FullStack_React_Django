@@ -44,12 +44,20 @@ const UserProfile = () => {
       }
     }
   }
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+    });
+  };
   return (
     <div className="page-container">
       <div className='main-container'>
         <h1>{renderProfileImage(profile.profile_img)} {profile.full_name}</h1>
         <p>Email: {profile.email}</p>
         <p>Phone number: {profile.phoneNumber}</p>
+        <p>Birth Day: {formatDate(profile.birth_date)}</p>
         <p>About me: {profile.aboutMe}</p>
         <p>Member Since: {new Date(profile.created_at).toLocaleDateString()}</p>
       </div>

@@ -30,6 +30,7 @@ const CreateComment = ({ postId, setComments }) => {
       const formData = new FormData();
       formData.append("text", text);
       formData.append("post", postId);
+      formData.append("posts", postId);
       formData.append("author", userInfo.id);
 
       if (file) {

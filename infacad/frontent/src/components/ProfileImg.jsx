@@ -26,8 +26,9 @@ const ProfileImg = () => {
         const response = await axios.get(url, config);
         console.log("API Response:", response.data);
         const userProfile = response.data.find(
-          (profile) => profile.id === userInfo.id
+          (profile) => profile.user === userInfo.id
         );
+        console.log("userId", userProfile);
         if (!userProfile) {
           console.error("No matching user profile found.");
           return;

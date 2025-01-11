@@ -43,8 +43,6 @@ class UserProfileView(generics.RetrieveAPIView):
         except Account.DoesNotExist:
             raise Http404("Account not found")
 
-
-
 @api_view(['POST', 'PUT'])
 def account_create_or_update(request):
     if request.method == 'POST':

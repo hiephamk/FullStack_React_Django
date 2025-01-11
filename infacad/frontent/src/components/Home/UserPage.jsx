@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import useAccessToken from '../../features/auth/token'
-import ProfileImg from '../ProfileImg'
+//import ProfileImg from '../ProfileImg'
 import axios from 'axios'
 import { toast } from 'react-toastify'
-import Notifications from '../Topic/Notifications'
+import { Link } from 'react-router-dom'
 
 const UserPage = () => {
   const {user, userInfo } = useSelector((state) => state.auth)
@@ -24,7 +24,7 @@ const UserPage = () => {
   
         const resp1 = await axios.get(url1, config)
   
-        const account = resp1.data.filter((account) => account.user == userInfo.id)
+        const account = resp1.data.filter((account) => account.user === userInfo.id)
         setUsers(account)
       } catch (error) {
         
@@ -35,10 +35,9 @@ const UserPage = () => {
 
       fetchUserInfo()
     }
-  },[accessToken,userInfo.id, user])
+  },[accessToken,userInfo.id])
 
   const renderProfileImage = (profile_img) => {
-    
     if (profile_img) {
       const fileExtension = profile_img.split('.').pop().toLowerCase();
       const imageFormats = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'svg', 'webp'];
@@ -48,35 +47,47 @@ const UserPage = () => {
               <img
                 src={`${profile_img}`}
                 alt="Post text"
-                style={{ width: '40px', height: '40px', borderRadius:'40px' }}
+                className='rounded-circle'
+                style={{width:'75px', height:'75px'}}
               />
             </>
         );
       }
     }
   }
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+    });
+  };
   return (
     <div>
-      <Notifications/>
-      <h3>{userInfo.first_name} {userInfo.last_name}</h3>
-      <p>email: {userInfo.email}</p>
-      {
-        users.map((user) => (
-          <div key={user.id}>
-            <p>Birth date: {user.birth_date}</p>
-            <h5>About me</h5>
-            <p>{user.aboutMe}</p>
-            <div>
-              <h5>Profile Image:</h5>
-              {renderProfileImage(user.profile_img)}
+      <div className='userprofile-container'>
+        {
+          users.length > 0 ? users.map((user) => (
+            <div key={user.id} className='userprofile-content'>
+              <div className='userprofile-img'>
+                {renderProfileImage(user.profile_img)}
+              </div>
+              <div className='userprofile-text'>
+                <h3>{userInfo.first_name} {userInfo.last_name}</h3>
+                <p>Phone Number: {user.phoneNumber}</p>
+                <p>email: {userInfo.email}</p>
+                <p>Birth date: {formatDate(user.birth_date)}</p>
+                <p>About me: </p>
+                <p>{user.aboutMe}</p>
+                <Link to = '/home/account'>Update Account</Link>
+              </div>
             </div>
-
+          ))
+          :
+          <div style={{padding:'20px', display:'flex'}}>
+            <p style={{paddingRight:'10px'}}>Please update your information!</p>
+            <Link to = '/home/account'>Update profile</Link>
           </div>
-        ))
-      }
-
-      <div>
-
+        }
       </div>
     </div>
   )

@@ -6,7 +6,7 @@ const UserImg = ({ profileImg }) => {
   return (
     <div>
       {profileImg ? (
-        <img style={{width:'40px', height:'40px', borderRadius:'40px'}} src={profileImg} alt="User Profile" />
+        <img style={{height:'40px',width:'40px', borderRadius:'100px'}} src={profileImg} alt="User Profile" />
       ) : (
         <ImProfile />
       )}

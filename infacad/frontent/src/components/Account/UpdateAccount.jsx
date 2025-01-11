@@ -8,6 +8,7 @@ import useAccessToken from '../../features/auth/token';
 const CreateOrUpdateAccount = () => {
   const { user, userInfo } = useSelector((state) => state.auth);
   const accessToken = useAccessToken(user);
+  const navigate = useNavigate()
   const [profileImg, setProfileImg] = useState(null);
   const [birth_date, setBirth_date] = useState('');
   const [aboutMe, setAboutMe] = useState('');
@@ -15,34 +16,29 @@ const CreateOrUpdateAccount = () => {
   const [accountId, setAccountId] = useState(null); // To store the account ID if exists
 
   useEffect(() => {
-    if (user) {
-      const url = `http://127.0.0.1:8000/api/account/`;
-      const config = {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      };
-      
-      axios.get(url, config)
-        .then((response) => {
-          console.log('Account response:', response.data);
-          const account = response.data;
-          const userAccount = account.find(account => account.user === userInfo.id);
+    if (user && accessToken && userInfo?.id) {
+      const fetchAccountData = async () => {
+        try {
+          const response = await axios.get('http://127.0.0.1:8000/api/account/', {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          });
+          const userAccount = response.data.find(account => account.user === userInfo.id);
           if (userAccount) {
-            console.log("useraccount: ", userAccount);
-            // If account exists, set the account data to pre-fill the form
+            console.log("userAccount:", userAccount);
             setAccountId(userAccount.id);
             setPhoneNumber(userAccount.phoneNumber || "");
-            setBirth_date(userAccount.birth_date || '');
+            setBirth_date(userAccount.birth_date ? new Date(userAccount.birth_date).toISOString().split('T')[0] : '');
             setAboutMe(userAccount.aboutMe || '');
             setProfileImg(userAccount.profile_img || null);
           }
-        })
-        .catch((error) => {
+        } catch (error) {
           console.error('Error fetching account details:', error);
-        });
+        }
+      };
+      fetchAccountData();
     }
-  }, [user, accessToken, userInfo.id]);
+  }, [user, accessToken, userInfo?.id]);
+  
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -86,7 +82,8 @@ const CreateOrUpdateAccount = () => {
       setProfileImg("");
       setAboutMe("");
       setBirth_date("")
-      toast.success('Account created or updated successfully!');
+      alert('Account created or updated successfully!');
+      navigate('/home')
     } catch (error) {
       console.error('Error creating/updating account:', error.response || error.message);
       toast.error('Failed to create or update account.');
@@ -94,36 +91,81 @@ const CreateOrUpdateAccount = () => {
   };
 
   return (
-    <div>
-      <h2>{accountId ? 'Update Your Account' : 'Create a New Account'}</h2>
-      <form onSubmit={handleFormSubmit} className='auth__form' style={{ display: 'flex', flexDirection: 'column' }}>
-        <input
-          type="text"
-          value={phoneNumber || ""}
-          onChange={(e) => setPhoneNumber(e.target.value)}
-          placeholder="phone number"
-        />
-        <input
-          type="date"
-          value={birth_date || ""}
-          onChange={(e) => setBirth_date(e.target.value)}
-          placeholder="Birthdate"
-        />
-        <textarea
-          value={aboutMe || ""}
-          onChange={(e) => setAboutMe(e.target.value)}
-          placeholder="Tell us about yourself"
-          rows="4"
-        />
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setProfileImg(e.target.files[0])}
-        />
-        <button type="submit" className="btn btn-primary">
-          {accountId ? 'Update Account' : 'Create Account'}
-        </button>
-      </form>
+    <div  >
+      {
+        accountId?
+        (<form onSubmit={handleFormSubmit} className='form-container'>
+          <h4>Update Your Profile</h4>
+        <div className="form-group d-flex flex-column align-items-md-center">
+          <input
+            type="text"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            placeholder="phone number"
+            style={{border:'1px solid #111', width:'300px', borderRadius:'5px', padding:'10px', margin:'10px'}}
+          />
+          <input
+            type="date"
+            value={birth_date}
+            onChange={(e) => setBirth_date(e.target.value)}
+            placeholder="Birthdate"
+            style={{border:'1px solid #111', width:'300px', borderRadius:'5px', padding:'10px', margin:'10px'}}
+          />
+          <textarea
+            value={aboutMe}
+            onChange={(e) => setAboutMe(e.target.value)}
+            placeholder="Tell us about yourself"
+            rows="4"
+            style={{border:'1px solid #111', width:'300px', borderRadius:'5px', padding:'10px', margin:'10px'}}
+          />
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setProfileImg(e.target.files[0])}
+            style={{border:'1px solid #111', width:'300px', borderRadius:'5px', padding:'10px', margin:'10px'}}
+          />
+          <button type="submit" className="btn btn-primary text-center" style={{border:'1px solid #111', width:'auto', borderRadius:'5px', padding:'10px', margin:'10px'}}>
+            {accountId ? 'Update Account' : 'Create Account'}
+          </button>
+        </div>
+        </form>)
+        :
+        <form onSubmit={handleFormSubmit} className='form-container' style={{ display: 'flex', flexDirection: 'column' }}>
+          <h4>Create your Profile</h4>
+          <div className='form-group d-flex flex-column align-items-md-center'>
+            <input
+              type="text"
+              value={phoneNumber || ""}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              placeholder="phone number"
+              style={{border:'1px solid #111', width:'300px', borderRadius:'5px', padding:'10px', margin:'10px'}}
+            />
+            <input
+              type="date"
+              value={birth_date || ""}
+              onChange={(e) => setBirth_date(e.target.value)}
+              placeholder="Birthdate"
+              style={{border:'1px solid #111', width:'300px', borderRadius:'5px', padding:'10px', margin:'10px'}}
+            />
+            <textarea
+              value={aboutMe || ""}
+              onChange={(e) => setAboutMe(e.target.value)}
+              placeholder="Tell us about yourself"
+              rows="4"
+              style={{border:'1px solid #111', width:'300px', borderRadius:'5px', padding:'10px', margin:'10px'}}
+            />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setProfileImg(e.target.files[0])}
+              style={{border:'1px solid #111', width:'300px', borderRadius:'5px', padding:'10px', margin:'10px'}}
+            />
+            <button type="submit" className="btn btn-primary text-center" style={{border:'1px solid #111', width:'auto', borderRadius:'5px', padding:'10px', margin:'10px'}}>
+              {accountId ? 'Update Account' : 'Create Account'}
+            </button>
+          </div>
+        </form>
+      }
     </div>
   );
 };

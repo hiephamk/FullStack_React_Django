@@ -25,7 +25,9 @@ const Nav = () => {
           </NavLink>
           <NavLink to='/home/profile'><p>{userInfo.first_name} {userInfo.last_name}</p></NavLink>
           <NavLink className='nav-childs' to="/home">Home</NavLink>
-          <NavLink className='nav-childs' to="/" onClick={handleLogout}>Logout</NavLink>
+          <div style={{display:'flex'}}>
+            <NavLink className='nav-childs' to="/" onClick={handleLogout}>Logout</NavLink>
+          </div>
           
         </nav>
     )

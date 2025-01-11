@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { BiLogInCircle } from "react-icons/bi"
 import { useDispatch, useSelector } from 'react-redux'
 import { login, reset, getUserInfo } from '../features/auth/authSlice'
-import { toast } from 'react-toastify'
+//import { toast } from 'react-toastify'
 import Spinner from "../components/Spinner"
 
 const LoginPage = () => {
@@ -41,7 +41,7 @@ const LoginPage = () => {
 
     useEffect(() => {
         if (isError) {
-            toast.error(message)
+            //toast.error(message)
         }
 
         if (isSuccess || user) {

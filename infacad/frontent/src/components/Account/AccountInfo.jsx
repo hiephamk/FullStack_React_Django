@@ -49,7 +49,7 @@ const AccountInfo = () => {
           )
           :
           (
-            <p></p>
+            <p>Plese update your information first to create channel or write a comment</p>
         )}
       </div>
       <h1>hello</h1>

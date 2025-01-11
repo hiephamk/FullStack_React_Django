@@ -24,7 +24,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name_plural = _("Users")
 
     def __str__(self):
-        return self.email
+        return self.get_full_name
     
     @property
     def get_full_name(self):
