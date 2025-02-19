@@ -11,7 +11,7 @@ import FetchContent from "../components/PublicZone/FetchContent";
 
 const PublicZone = () => {
   const [topic, setTopic] = useState("General");
-  const [loading, setLoading] = useState(true); // New loading state
+  const [loading, setLoading] = useState(true);
   const content = usePublicZone();
   const [contents, setContent] = useState([])
   useEffect(() => {

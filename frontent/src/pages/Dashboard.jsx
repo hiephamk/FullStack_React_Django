@@ -1,24 +1,18 @@
 import { useState } from 'react'
 import { Link, Outlet } from 'react-router-dom'
 import Nav from '../components/navigation/Nav'
-import JoinedChanel from '../components/Channel/JoinedChanel'
 import ChatWidget from './ChatWidget'
 import ChatListGroup from '../components/Chat/ChatListGroup'
-import ChannelList from '../components/Channel/ChannelList'
-import Circles from '../components/Circles/Circles'
 import Circle_Notifications from '../components/Circles/Circle_Notifications'
 import AddMembersToCircle from '../components/Circles/AddMembersToCircle'
 import Channel_Notifications from '../components/Channel/Channel_Notifications'
 import useCircle from '../features/Hooks/useCircle'
-import CreateChannel from '../components/Channel/CreateChannel'
-import CreateStatus from '../components/Post/CreateStatus'
-
 
 
 const Dashboard = () => {
   const [setChatReceiverId] = useState(null);
   const {Circle} = useCircle()
-  const [circles, setCircles] = useState([])
+  // const [circles, setCircles] = useState([])
 
   // Define the function to handle chat start
   const handleChatStart = (receiverId) => {
@@ -50,7 +44,7 @@ const Dashboard = () => {
               </div>
               <div className='left-content'>
                 <ul className='bg-light text-center rounded-2 mt-3'>
-                  <Link className='text-black text-decoration-none fw-bold fs-4' to ='/home/profile'>Profile</Link>
+                  <Link className='text-black text-decoration-none fw-bold fs-5 text-center' to ='/home/profile'>Profile</Link>
                 </ul>
               </div>
             </ul>
@@ -61,14 +55,9 @@ const Dashboard = () => {
               </div>
           </div>
           <div className="right-container">
-            
-            
-            
-            <div className='right-content'>
+            <div className='right-content mt-3'>
+              <h6>Notifications</h6>
               <Circle_Notifications/>
-            </div>
-            <div className='right-content'>
-              <h5>Your channel request:</h5>
               <Channel_Notifications/>
             </div>
             <div className='right-content'>

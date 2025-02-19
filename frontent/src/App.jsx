@@ -55,7 +55,6 @@ function App() {
               <Route path="/home/channels/joinedchannel/topics/:topicId" element={<ChannelPostAndCommentList />} />
             </Route>
             <Route path="/home/publiczone" element={<PublicZone />}>
-
             </Route>
           <Route path="*" element={<NotFoundPage />}/>
         </Routes>

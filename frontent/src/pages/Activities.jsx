@@ -12,10 +12,10 @@ const Activities = () => {
   return (
     <>
         <div style={{margin:'10px 20px auto', }}>
-            <CreateStatus onPostCreated={handlePostCreated}/>
+          <CreateStatus onPostCreated={handlePostCreated}/>
         </div>
         <div className='main-content'>
-        <PostAndComment posts={posts} setPosts={setPosts} visibility={visibility} />
+          <PostAndComment posts={posts} setPosts={setPosts} visibility={visibility} />
         </div>
     </>
   )
