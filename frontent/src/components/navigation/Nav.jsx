@@ -28,6 +28,7 @@ const Nav = () => {
       </NavLink>
       <NavLink className='nav-childs' to="/home">Home</NavLink>
       <NavLink className='nav-childs' to="/home/channels">Video</NavLink>
+      <NavLink className='nav-childs' to="/home/feedback">Feedback</NavLink>
       <NavLink className='nav-childs' to="/home/publiczone">Public Zone</NavLink>
       <div className='dropstart'>
         <button data-bs-toggle="dropdown">

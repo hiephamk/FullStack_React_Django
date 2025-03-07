@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'chat',
     'mychannel',
     'publiczone',
+    'feedback',
 
 ]
 MIDDLEWARE = [

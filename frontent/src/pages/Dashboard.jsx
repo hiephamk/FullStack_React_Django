@@ -7,6 +7,7 @@ import Circle_Notifications from '../components/Circles/Circle_Notifications'
 import AddMembersToCircle from '../components/Circles/AddMembersToCircle'
 import Channel_Notifications from '../components/Channel/Channel_Notifications'
 import useCircle from '../features/Hooks/useCircle'
+import Feedback from 'react-bootstrap/esm/Feedback'
 
 
 const Dashboard = () => {

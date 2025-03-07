@@ -16,4 +16,5 @@ urlpatterns = [
     path('api/', include('chat.urls')),
     path('api/', include('mychannel.urls')),
     path('api/', include('publiczone.urls')),
+    path('api/', include('feedback.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

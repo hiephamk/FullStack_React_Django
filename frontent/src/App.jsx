@@ -23,6 +23,7 @@ import Activities from "./pages/Activities";
 import CreateChannelTopic from "./components/Channel/CreateChannelTopic";
 import PublicZone from "./pages/PublicZone";
 import CommunityChannel from "./pages/CommunityChannel";
+import Feedback from "./components/Feedback/Feedback";
 // import FetchContent from "./components/PublicZone/FetchContent";
 
 
@@ -46,6 +47,7 @@ function App() {
             <Route path="/home/create-profile" element={<CreateOrUpdateAccount/>}/>
             <Route path="/home/activities" element={<Activities/>}/>
             <Route path="/home/chat" element={<ChatBox/>}/>
+            <Route path="/home/feedback" element={<Feedback/>}/>
           </Route>
             <Route path="/home/channels" element={<CommunityChannel/>}>
               <Route index element={<CommunityPage/>}/>
