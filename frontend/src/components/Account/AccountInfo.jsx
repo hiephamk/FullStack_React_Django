@@ -28,7 +28,7 @@ const AccountInfo = () => {
         if (res.data.length > 0) {
           const userProfile = res.data.find(profile => profile.user === userInfo.id);
           if (userProfile) {
-            setAboutMe(userProfile.aboutMe); // Set the image URL for the current user
+            setAboutMe(userProfile.aboutMe);
           } else {
             console.error("User profile image not found");
           }
